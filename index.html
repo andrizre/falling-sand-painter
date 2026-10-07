@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Falling Sand Painter</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>⚡ Falling Sand Painter</h1>
+    <p class="tagline">A cellular-automaton physics toy — paint with elements and watch them fall, flow, burn and react.</p>
+  </header>
+
+  <div id="toolbar">
+    <div id="palette" role="toolbar" aria-label="Elements"></div>
+    <div id="controls">
+      <label>Brush
+        <input type="range" id="brushSize" min="1" max="30" value="6">
+        <span id="brushVal">6</span>
+      </label>
+      <label>Speed
+        <input type="range" id="speed" min="1" max="4" value="2">
+        <span id="speedVal">2</span>
+      </label>
+      <button id="pauseBtn">⏸ Pause</button>
+      <button id="clearBtn">🗑 Clear</button>
+      <button id="saveBtn">💾 PNG</button>
+    </div>
+  </div>
+
+  <main>
+    <canvas id="sim" width="480" height="320"></canvas>
+    <div id="hoverInfo">—</div>
+  </main>
+
+  <footer>
+    <p>Draw with the mouse or touch. Shortcuts: <kbd>[</kbd>/<kbd>]</kbd> brush size, <kbd>Space</kbd> pause, <kbd>C</kbd> clear, <kbd>1-9</kbd>/<kbd>0</kbd> pick element.</p>
+  </footer>
+
+  <script src="elements.js"></script>
+  <script src="sim.js"></script>
+</body>
+</html>

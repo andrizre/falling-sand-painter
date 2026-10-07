@@ -1,0 +1,100 @@
+:root {
+  --bg: #0e0f13;
+  --panel: #171922;
+  --accent: #f97316;
+  --text: #e6e8ef;
+  --muted: #8b90a0;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 16px;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+header { text-align: center; margin-bottom: 12px; }
+h1 { font-size: 1.4rem; letter-spacing: 0.5px; }
+.tagline { color: var(--muted); font-size: 0.85rem; margin-top: 4px; }
+
+#toolbar {
+  width: 720px;
+  max-width: 100%;
+  background: var(--panel);
+  border: 1px solid #262a38;
+  border-radius: 10px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#palette { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.el-btn {
+  border: 2px solid transparent;
+  border-radius: 6px;
+  padding: 5px 9px;
+  font-size: 0.78rem;
+  color: #fff;
+  cursor: pointer;
+  text-shadow: 0 1px 2px rgba(0,0,0,.7);
+}
+.el-btn.active { border-color: #fff; box-shadow: 0 0 8px rgba(255,255,255,.4); }
+
+#controls {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  font-size: 0.82rem;
+}
+#controls label { display: flex; align-items: center; gap: 6px; color: var(--muted); }
+#controls input[type="range"] { width: 110px; accent-color: var(--accent); }
+#controls button {
+  background: #232737;
+  color: var(--text);
+  border: 1px solid #333a52;
+  border-radius: 6px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+#controls button:hover { background: #2d3350; }
+
+main { margin-top: 12px; }
+
+#sim {
+  border: 1px solid #262a38;
+  border-radius: 8px;
+  background: #08090c;
+  cursor: crosshair;
+  touch-action: none;
+  image-rendering: pixelated;
+  max-width: 100%;
+  height: auto;
+}
+
+#hoverInfo {
+  color: var(--muted);
+  font-size: 0.78rem;
+  margin-top: 6px;
+  font-variant-numeric: tabular-nums;
+}
+
+footer { margin-top: 10px; color: var(--muted); font-size: 0.75rem; text-align: center; }
+kbd {
+  background: #232737;
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-size: 0.72rem;
+  border: 1px solid #333a52;
+}
