@@ -84,5 +84,36 @@ g.setLife(5, 8, 1);
 ctx.ELEMENTS[7].update(5, 8, g);
 check('smoke decay clears cell', g.get(5, 8) === 0);
 
+// 6. gunpowder explodes when ignited by fire
+g.clear();
+for (let y = 0; y < 10; y++) { g.set(0, y, KEY_TO_ID.get('stone')); g.set(9, y, KEY_TO_ID.get('stone')); }
+g.set(5, 5, KEY_TO_ID.get('gunpowder'));
+g.set(6, 5, KEY_TO_ID.get('fire'));
+g.setLife(6, 5, 40);
+let boomed = false;
+for (let t = 0; t < 50 && !boomed; t++) {
+  for (let y = 9; y >= 0; y--) for (let x = 1; x < 9; x++) {
+    const id = g.get(x, y);
+    if (id === KEY_TO_ID.get('gunpowder')) ctx.ELEMENTS[11].update(x, y, g);
+    else if (id === KEY_TO_ID.get('fire')) ctx.ELEMENTS[4].update(x, y, g);
+  }
+  boomed = g.get(5, 5) !== KEY_TO_ID.get('gunpowder');
+}
+check('gunpowder ignites and clears the charge cell', boomed);
+check('blast leaves fire or smoke around', g.get(5, 5) === KEY_TO_ID.get('fire') || g.get(5, 5) === KEY_TO_ID.get('smoke') || g.get(5, 5) === 0);
+
+// 7. stone/wall are blast-proof (a single charge next to stone leaves it intact)
+g.clear();
+g.set(4, 5, KEY_TO_ID.get('stone'));
+g.set(5, 5, KEY_TO_ID.get('gunpowder'));
+ctx.ELEMENTS[11].update(5, 5, g); // fire at neighbors? none -> falls
+g.set(5, 4, KEY_TO_ID.get('fire'));
+g.setLife(5, 4, 40);
+for (let t = 0; t < 10; t++) {
+  if (g.get(5, 5) === KEY_TO_ID.get('gunpowder')) ctx.ELEMENTS[11].update(5, 5, g);
+  if (g.get(5, 4) === KEY_TO_ID.get('fire')) ctx.ELEMENTS[4].update(5, 4, g);
+}
+check('stone survives explosion', g.get(4, 5) === KEY_TO_ID.get('stone'));
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

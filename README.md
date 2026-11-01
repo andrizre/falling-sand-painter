@@ -9,13 +9,13 @@ Paint elements onto a 480×320 cell grid and watch them obey simple per-cell rul
 - **Sand / Stone / Wood / Wall** — powders and static solids
 - **Water / Oil / Lava / Acid** — liquids that flow, with density (oil floats on water, lava flows slowly)
 - **Fire / Smoke** — short-lived elements that rise and fade
-- **Reactions**: fire ignites wood & oil, water extinguishes fire, lava + water → stone + smoke, acid dissolves stone/wood, plants grow when watered
+- **Reactions**: fire ignites wood & oil, water extinguishes fire, lava + water → stone + smoke, acid dissolves stone/wood, plants grow when watered, gunpowder chain-explodes (stone & wall are blast-proof)
 
 ## Run
 
 Open `index.html` in any browser (or `python3 -m http.server` and visit http://localhost:8000).
 
-Optional: `node test.js` runs headless physics checks (sand falls, oil floats, fire ignites wood, lava+water→stone, smoke decays).
+Optional: `node test.js` runs headless physics checks (sand falls, oil floats, fire ignites wood, lava+water→stone, smoke decays, gunpowder explodes with blast-proof stone).
 
 ## Controls
 

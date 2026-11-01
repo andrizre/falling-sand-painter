@@ -66,12 +66,18 @@ const ELEMENTS = [
     hue: 350, sat: 30, kind: 'static',
     update: null,
   },
+  {
+    id: 12, key: 'gunpowder', label: 'Gunpowder', emoji: '💥',
+    hue: 280, sat: 15, kind: 'powder',
+    update: (x, y, g) => gunpowder(x, y, g),
+  },
 ];
 
 const BY_ID = new Map(ELEMENTS.map(e => [e.id, e]));
 const KEY_TO_ID = new Map([
   ['sand', 1], ['water', 2], ['stone', 3], ['plant', 4], ['fire', 5],
-  ['wood', 6], ['oil', 7], ['smoke', 8], ['acid', 9], ['lava', 10], ['wall', 11],
+  ['wood', 6], ['oil', 7], ['smoke', 8], ['acid', 9], ['lava', 10],
+  ['wall', 11], ['gunpowder', 12],
 ]);
 
 // ---------- shared movement helpers ----------
@@ -213,6 +219,46 @@ function acid(x, y, g) {
     if (el && el.kind === 'static' && Math.random() < 0.05) {
       g.set(x + dx, y + dy, 0);
       if (Math.random() < 0.25) { g.set(x, y, 0); return; } // acid gets used up
+    }
+  }
+}
+
+function gunpowder(x, y, g) {
+  const id = g.get(x, y);
+  // chain-ignite: fire, lava or another exploding charge sets this cell off
+  const heat = [KEY_TO_ID.get('fire'), KEY_TO_ID.get('lava')];
+  let ignited = false;
+  for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
+    if (heat.includes(g.get(x + dx, y + dy))) { ignited = true; break; }
+  }
+  if (ignited) { explode(x, y, g); return true; }
+  powder(x, y, g);
+}
+
+// Blast: clear a disc and fill its rim with fire + smoke.
+function explode(cx, cy, g) {
+  const R = 7;
+  g.set(cx, cy, 0);
+  for (let dy = -R; dy <= R; dy++) {
+    for (let dx = -R; dx <= R; dx++) {
+      const d2 = dx * dx + dy * dy;
+      if (d2 > R * R) continue;
+      const x = cx + dx, y = cy + dy;
+      if (!g.inBounds(x, y)) continue;
+      const n = g.get(x, y);
+      if (n === KEY_TO_ID.get('wall') || n === KEY_TO_ID.get('stone')) continue; // blast-proof
+      const el = BY_ID.get(n);
+      if (el && el.kind === 'static') continue;
+      if (n === KEY_TO_ID.get('gunpowder') && d2 > 0) continue; // let it chain on its own update
+      if (d2 > (R * 0.55) * (R * 0.55) && Math.random() < 0.6) {
+        g.set(x, y, KEY_TO_ID.get('fire'));
+        g.setLife(x, y, 30 + Math.random() * 20 | 0);
+      } else if (Math.random() < 0.3) {
+        g.set(x, y, KEY_TO_ID.get('smoke'));
+        g.setLife(x, y, 60 + Math.random() * 40 | 0);
+      } else {
+        g.set(x, y, 0);
+      }
     }
   }
 }
